@@ -3,6 +3,8 @@ package com.engeto.crypto_portfolio_manager.controller;
 import com.engeto.crypto_portfolio_manager.exceptions.CryptoNotFoundException;
 import com.engeto.crypto_portfolio_manager.model.Crypto;
 import com.engeto.crypto_portfolio_manager.service.CryptoManager;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,16 +13,18 @@ import java.math.BigDecimal;
 
 
 @RestController
+@RequestMapping("/api/cryptos")
 public class CryptoController {
-    private final CryptoManager cryptoManager = new CryptoManager();
+    @Autowired
+    private CryptoManager cryptoManager;
 
-    @PostMapping("/cryptos")
-    public ResponseEntity<String> addCrypto(@RequestBody Crypto crypto) {
+    @PostMapping
+    public ResponseEntity<String> addCrypto(@Valid @RequestBody Crypto crypto) {
         cryptoManager.addCrypto(crypto);
         return new ResponseEntity<>("Crypto has been successfully added!", HttpStatus.CREATED);
     }
 
-    @GetMapping("/cryptos")
+    @GetMapping
     public ResponseEntity<?> retrieveCrypto(@RequestParam(required = false) String sort) {
         if (sort != null) {
             String sortKey = sort.toLowerCase();
@@ -38,15 +42,15 @@ public class CryptoController {
         return new ResponseEntity<>(cryptoManager.getCryptoPortfolio(), HttpStatus.OK);
     }
 
-    @GetMapping("/cryptos/{id}")
-    public ResponseEntity<Crypto> getCryptoDetails(@PathVariable int id) throws CryptoNotFoundException {
+    @GetMapping("/{id}")
+    public ResponseEntity<Crypto> getCryptoDetails(@PathVariable Integer id) throws CryptoNotFoundException {
         return new ResponseEntity<>(cryptoManager.findCryptoById(id), HttpStatus.OK);
     }
 
-    @PutMapping("/cryptos/{id}")
-    public ResponseEntity<String> getCryptoDetails(@RequestBody Crypto updatedCrypto,
-                                                   @PathVariable int id) throws CryptoNotFoundException {
-        if (updatedCrypto.getId() != id) {
+    @PutMapping("/{id}")
+    public ResponseEntity<String> getCryptoDetails(@Valid @RequestBody Crypto updatedCrypto,
+                                                   @PathVariable Integer id) throws CryptoNotFoundException {
+        if (!updatedCrypto.getId().equals(id)) {
             return new ResponseEntity<>("ID v těle požadavku neodpovídá ID v URL!", HttpStatus.BAD_REQUEST);
         }
         cryptoManager.updateCrypto(updatedCrypto, id);

@@ -3,6 +3,7 @@ package com.engeto.crypto_portfolio_manager.service;
 import com.engeto.crypto_portfolio_manager.exceptions.CryptoNotFoundException;
 import com.engeto.crypto_portfolio_manager.model.Crypto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 
 
 @Slf4j
+@Service
 public class CryptoManager {
     private final List<Crypto> cryptoPortfolio = new ArrayList<>();
 
