@@ -16,6 +16,9 @@ This application is a simple Spring Boot project for managing a list of cryptocu
 - **GET /cryptos** – Retrieves all cryptocurrencies, with optional sorting by `price`, `name`, or `quantity` using the `sort` query parameter.
 - **GET /cryptos/{id}** – Retrieves a specific cryptocurrency by its ID.
 - **GET /test** – A simple test endpoint to verify the controller is working.
+- **PUT /cryptos/{id}** – Updates the details of a cryptocurrency by its ID. The request body should contain the updated information for the cryptocurrency.
+- **GET /portfolio-value** – Retrieves the total value of the cryptocurrency portfolio, calculated by summing the `price * quantity` of all cryptocurrencies in the portfolio.
+
 
 ## Usage
 After running the application, you can access the API documentation via Swagger UI at:
