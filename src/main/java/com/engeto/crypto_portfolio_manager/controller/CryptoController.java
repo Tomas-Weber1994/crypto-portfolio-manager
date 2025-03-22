@@ -58,9 +58,4 @@ public class CryptoController {
         BigDecimal portfolioValue = cryptoManager.getPortfolioValue();
         return new ResponseEntity<>("Celková hodnota kryptoměnového portfolia je: " + portfolioValue + " Kč", HttpStatus.OK);
     }
-
-    @GetMapping("/test")
-    public String testEndpoint() {
-        return "Controller is working!";
-    }
 }
