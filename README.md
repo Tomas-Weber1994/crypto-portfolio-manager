@@ -1,4 +1,4 @@
-# Crypto Portfolio Manager
+# Spring web application - Crypto Portfolio Manager
 
 ## Description
 This application is a simple Spring Boot project for managing a list of cryptocurrencies. It provides basic functionalities to add, retrieve, sort, and search for cryptocurrencies using various endpoints.
