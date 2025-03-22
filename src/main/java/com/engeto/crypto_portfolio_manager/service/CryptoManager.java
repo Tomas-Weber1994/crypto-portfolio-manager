@@ -4,6 +4,7 @@ import com.engeto.crypto_portfolio_manager.exceptions.CryptoNotFoundException;
 import com.engeto.crypto_portfolio_manager.model.Crypto;
 import lombok.extern.slf4j.Slf4j;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,9 +19,27 @@ public class CryptoManager {
         cryptoPortfolio.add(crypto);
     }
 
+    public void updateCrypto(Crypto newCrypto, int id) throws CryptoNotFoundException {
+        Crypto cryptoToUpdate = findCryptoById(id);
+        cryptoToUpdate.setName(newCrypto.getName());
+        cryptoToUpdate.setSymbol(newCrypto.getSymbol());
+        cryptoToUpdate.setPrice(newCrypto.getPrice());
+        cryptoToUpdate.setQuantity(newCrypto.getQuantity());
+    }
+
     public List<Crypto> getCryptoPortfolio() {
         return new ArrayList<>(cryptoPortfolio);
     }
+
+    public BigDecimal getPortfolioValue() {
+        BigDecimal portfolioValue = BigDecimal.valueOf(0);
+        for (Crypto crypto : cryptoPortfolio) {
+            BigDecimal cryptoValue = crypto.getPrice().multiply(BigDecimal.valueOf(crypto.getQuantity()));
+            portfolioValue = portfolioValue.add(cryptoValue);
+        }
+        return portfolioValue;
+    }
+
 
     public void sortByName() {
         Collections.sort(cryptoPortfolio);
