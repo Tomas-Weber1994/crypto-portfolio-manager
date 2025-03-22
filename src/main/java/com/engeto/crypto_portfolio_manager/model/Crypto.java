@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Crypto implements Comparable<Crypto> {
 
-    private Integer id;
+    private int id;
     private String name;
     private String symbol;
     private BigDecimal price;

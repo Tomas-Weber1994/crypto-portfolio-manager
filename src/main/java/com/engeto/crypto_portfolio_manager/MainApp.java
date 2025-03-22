@@ -17,5 +17,14 @@ public class MainApp {
         System.out.println(crypto1.compareTo(crypto2));
         cryptoManager.sortByName();
         System.out.println(cryptoManager.getCryptoPortfolio());
+        System.out.println(retrieveCryptoById(cryptoManager, 3));
+        }
+
+    public static Crypto retrieveCryptoById(CryptoManager cryptoManager, int id) {
+        return cryptoManager.getCryptoPortfolio()
+                .stream()
+                .filter(crypto -> crypto.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Kryptoměna s ID " + id + " nebyla nalezena."));
     }
-}
+    }

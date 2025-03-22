@@ -1,12 +1,16 @@
 package com.engeto.crypto_portfolio_manager.service;
 
+import com.engeto.crypto_portfolio_manager.exceptions.CryptoNotFoundException;
 import com.engeto.crypto_portfolio_manager.model.Crypto;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+
+@Slf4j
 public class CryptoManager {
     private final List<Crypto> cryptoPortfolio = new ArrayList<>();
 
@@ -28,5 +32,16 @@ public class CryptoManager {
 
     public void sortByQuantity() {
         cryptoPortfolio.sort(Comparator.comparing(Crypto::getQuantity));
+    }
+
+    public Crypto findCryptoById(int id) throws CryptoNotFoundException {
+        return this.getCryptoPortfolio()
+                .stream()
+                .filter(crypto -> crypto.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> {
+                    log.error("Kryptoměna s ID {} nebyla nalezena.", id);
+                    return new CryptoNotFoundException("Kryptoměna s ID " + id + " nebyla nalezena.");
+                });
     }
 }
