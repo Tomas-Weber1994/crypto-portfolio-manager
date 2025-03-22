@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
         logError(ex);
         Map<String, Object> additionalDetails = new HashMap<>();
         additionalDetails.put("exampleInput", CryptoJsonExampleFormat.CRYPTO_JSON_EXAMPLE_FORMAT);
-        return createErrorResponse(request, "Vložený formát dat není správný!", HttpStatus.BAD_REQUEST, additionalDetails);
+        return createErrorResponse(request, "The provided data format is incorrect!", HttpStatus.BAD_REQUEST, additionalDetails);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
         logError(ex);
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(fieldError -> errors.put(fieldError.getField(), fieldError.getDefaultMessage()));
-        return createErrorResponse(request, "Data nelze zvalidovat!", HttpStatus.BAD_REQUEST, Map.of("errors", errors));
+        return createErrorResponse(request, "Data validation failed!", HttpStatus.BAD_REQUEST, Map.of("errors", errors));
     }
 
     private void logError(Throwable ex) {

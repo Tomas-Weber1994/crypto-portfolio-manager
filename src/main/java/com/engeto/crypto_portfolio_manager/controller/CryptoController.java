@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
-
 @RestController
 @RequestMapping("/api/cryptos")
 public class CryptoController {
@@ -35,7 +34,7 @@ public class CryptoController {
                 default -> {
                     return ResponseEntity
                             .badRequest()
-                            .body("Chyba! " + sortKey + " je neplatný způsob řazení kryptoměn!");
+                            .body("Error! " + sortKey + " is an invalid sorting method for cryptocurrencies!");
                 }
             }
         }
@@ -51,15 +50,15 @@ public class CryptoController {
     public ResponseEntity<String> getCryptoDetails(@Valid @RequestBody Crypto updatedCrypto,
                                                    @PathVariable Integer id) throws CryptoNotFoundException {
         if (!updatedCrypto.getId().equals(id)) {
-            return new ResponseEntity<>("ID v těle požadavku neodpovídá ID v URL!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("ID in the request body does not match the ID in the URL!", HttpStatus.BAD_REQUEST);
         }
         cryptoManager.updateCrypto(updatedCrypto, id);
-        return new ResponseEntity<>("Kryptoměna byla úspěšně aktualizována!", HttpStatus.OK);
+        return new ResponseEntity<>("Crypto has been successfully updated!", HttpStatus.OK);
     }
 
     @GetMapping("/portfolio-value")
     public ResponseEntity<String> getCryptoDetails() {
         BigDecimal portfolioValue = cryptoManager.getPortfolioValue();
-        return new ResponseEntity<>("Celková hodnota kryptoměnového portfolia je: " + portfolioValue + " Kč", HttpStatus.OK);
+        return new ResponseEntity<>("The total value of the cryptocurrency portfolio is: " + portfolioValue + " CZK", HttpStatus.OK);
     }
 }

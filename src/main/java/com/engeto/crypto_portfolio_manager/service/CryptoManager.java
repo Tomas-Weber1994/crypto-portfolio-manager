@@ -11,22 +11,25 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-
 @Slf4j
 @Service
 public class CryptoManager {
     private final List<Crypto> cryptoPortfolio = new ArrayList<>();
 
     public void addCrypto(Crypto crypto) {
+        log.info("Adding new cryptocurrency: {} (ID: {}, Symbol: {})", crypto.getName(), crypto.getId(), crypto.getSymbol());
         cryptoPortfolio.add(crypto);
+        log.info("Cryptocurrency added successfully. Current portfolio size: {}", cryptoPortfolio.size());
     }
 
     public void updateCrypto(Crypto newCrypto, int id) throws CryptoNotFoundException {
         Crypto cryptoToUpdate = findCryptoById(id);
+        log.info("Updating cryptocurrency with ID {}: {}", id, cryptoToUpdate);
         cryptoToUpdate.setName(newCrypto.getName());
         cryptoToUpdate.setSymbol(newCrypto.getSymbol());
         cryptoToUpdate.setPrice(newCrypto.getPrice());
         cryptoToUpdate.setQuantity(newCrypto.getQuantity());
+        log.info("Cryptocurrency with ID {} updated successfully.", id);
     }
 
     public List<Crypto> getCryptoPortfolio() {
@@ -34,25 +37,32 @@ public class CryptoManager {
     }
 
     public BigDecimal getPortfolioValue() {
+        log.info("Calculating the total value of the portfolio.");
         BigDecimal portfolioValue = BigDecimal.valueOf(0);
         for (Crypto crypto : cryptoPortfolio) {
             BigDecimal cryptoValue = crypto.getPrice().multiply(BigDecimal.valueOf(crypto.getQuantity()));
             portfolioValue = portfolioValue.add(cryptoValue);
         }
+        log.info("Total portfolio value calculated: {}", portfolioValue);
         return portfolioValue;
     }
 
-
     public void sortByName() {
+        log.info("Sorting portfolio by cryptocurrency name.");
         Collections.sort(cryptoPortfolio);
+        log.info("Portfolio sorted by name.");
     }
 
     public void sortByPrice() {
+        log.info("Sorting portfolio by cryptocurrency price.");
         cryptoPortfolio.sort(Comparator.comparing(Crypto::getPrice));
+        log.info("Portfolio sorted by price.");
     }
 
     public void sortByQuantity() {
+        log.info("Sorting portfolio by cryptocurrency quantity.");
         cryptoPortfolio.sort(Comparator.comparing(Crypto::getQuantity));
+        log.info("Portfolio sorted by quantity.");
     }
 
     public Crypto findCryptoById(int id) throws CryptoNotFoundException {
@@ -61,8 +71,8 @@ public class CryptoManager {
                 .filter(crypto -> crypto.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> {
-                    log.error("Kryptoměna s ID {} nebyla nalezena.", id);
-                    return new CryptoNotFoundException("Kryptoměna s ID " + id + " nebyla nalezena.");
+                    log.error("Cryptocurrency with ID {} not found.", id);
+                    return new CryptoNotFoundException("Cryptocurrency with ID " + id + " not found.");
                 });
     }
 }

@@ -12,23 +12,23 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Crypto implements Comparable<Crypto> {
 
-    @NotNull(message = "ID kryptoměny je povinné.")
-    @Min(value = 1, message = "ID kryptoměny musí být větší než 0.")
+    @NotNull(message = "Crypto ID is required.")
+    @Min(value = 1, message = "Crypto ID must be greater than 0.")
     private Integer id;
 
-    @NotNull(message = "Název kryptoměny je povinný.")
-    @Pattern(regexp = "^[A-Za-z]+$", message = "Název kryptoměny musí obsahovat pouze písmena.")
+    @NotNull(message = "Crypto name is required.")
+    @Pattern(regexp = "^[A-Za-z]+$", message = "Crypto name must contain only letters.")
     private String name;
 
-    @NotNull(message = "Symbol kryptoměny je povinný.")
-    @Pattern(regexp = "^[A-Za-z]+$", message = "Symbol kryptoměny musí obsahovat pouze písmena.")
+    @NotNull(message = "Crypto symbol is required.")
+    @Pattern(regexp = "^[A-Za-z]+$", message = "Crypto symbol must contain only letters.")
     private String symbol;
 
-    @NotNull(message = "Cena kryptoměny je povinná.")
-    @Min(value = 0, message = "Cena kryptoměny musí být větší nebo rovna 0.")
+    @NotNull(message = "Crypto price is required.")
+    @Min(value = 0, message = "Crypto price must be greater than or equal to 0.")
     private BigDecimal price;
 
-    @Min(value = 0, message = "Množství kryptoměny musí být větší nebo rovno 0.")
+    @Min(value = 0, message = "Crypto quantity must be greater than or equal to 0.")
     private Double quantity;
 
     @Override
