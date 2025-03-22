@@ -1,4 +1,4 @@
-package com.engeto.crypto_portfolio_manager.exceptions;
+package com.engeto.crypto_portfolio_manager.constants;
 
 import java.util.HashMap;
 import java.util.Map;

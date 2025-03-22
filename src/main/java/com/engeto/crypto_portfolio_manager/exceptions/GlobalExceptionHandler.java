@@ -1,5 +1,6 @@
 package com.engeto.crypto_portfolio_manager.exceptions;
 
+import com.engeto.crypto_portfolio_manager.constants.CryptoJsonExampleFormat;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
