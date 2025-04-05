@@ -51,6 +51,7 @@ public class CryptoManager {
     }
 
     public void updateCrypto(Crypto newCrypto, int id) throws CryptoNotFoundException, TooManyRequestsException {
+        isValidCrypto(newCrypto);
         Crypto cryptoToUpdate = findCryptoById(id);
         log.info("Updating cryptocurrency with ID {}: {}", id, cryptoToUpdate);
         cryptoToUpdate.setName(newCrypto.getName());
@@ -65,7 +66,7 @@ public class CryptoManager {
         crypto.setPrice(currentPrice);
     }
 
-    @Scheduled(fixedRate = 30000)  // price update every 30 seconds
+    @Scheduled(fixedRateString = "${crypto.price.update.interval.ms}")
     public void updatePricesPeriodically() throws TooManyRequestsException {
         if (!cryptoPortfolio.isEmpty()) {
             for (Crypto crypto : cryptoPortfolio) {
