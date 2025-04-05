@@ -3,7 +3,7 @@ package com.engeto.crypto_portfolio_manager.constants;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CryptoJsonExampleFormat {
+public class CryptoJsonExample {
 
     public static final Map<String, Object> CRYPTO_JSON_EXAMPLE_FORMAT;
 

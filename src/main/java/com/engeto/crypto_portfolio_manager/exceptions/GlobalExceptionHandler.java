@@ -1,6 +1,6 @@
 package com.engeto.crypto_portfolio_manager.exceptions;
 
-import com.engeto.crypto_portfolio_manager.constants.CryptoJsonExampleFormat;
+import com.engeto.crypto_portfolio_manager.constants.CryptoJsonExample;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
             case HttpMessageNotReadableException httpMessageNotReadableException -> {
                 status = HttpStatus.BAD_REQUEST;
                 message = "The provided input is incorrect!";
-                errorDetails.put("exampleInput", CryptoJsonExampleFormat.CRYPTO_JSON_EXAMPLE_FORMAT);
+                errorDetails.put("exampleInput", CryptoJsonExample.CRYPTO_JSON_EXAMPLE_FORMAT);
             }
             case MethodArgumentNotValidException methodArgumentNotValidException -> {
                 status = HttpStatus.BAD_REQUEST;
