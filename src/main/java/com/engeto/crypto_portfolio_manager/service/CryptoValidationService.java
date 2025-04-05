@@ -17,7 +17,7 @@ public class CryptoValidationService {
     private static final String COINGECKO_API_URL = "https://api.coingecko.com/api/v3/coins/list";
     private final RestTemplate restTemplate = new RestTemplate();
     @Getter
-    private final Map<String, String> supportedCryptos = new HashMap<>(); // Mapování názvu na symbol
+    private final Map<String, String> supportedCryptos = new HashMap<>();
 
     @PostConstruct
     public void loadSupportedCryptocurrencies() {
