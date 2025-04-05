@@ -1,6 +1,7 @@
 package com.engeto.crypto_portfolio_manager.controller;
 
 import com.engeto.crypto_portfolio_manager.exceptions.CryptoNotFoundException;
+import com.engeto.crypto_portfolio_manager.exceptions.TooManyRequestsException;
 import com.engeto.crypto_portfolio_manager.model.Crypto;
 import com.engeto.crypto_portfolio_manager.service.CryptoManager;
 import jakarta.validation.Valid;
@@ -18,7 +19,7 @@ public class CryptoController {
     private CryptoManager cryptoManager;
 
     @PostMapping
-    public ResponseEntity<String> addCrypto(@Valid @RequestBody Crypto crypto) {
+    public ResponseEntity<String> addCrypto(@Valid @RequestBody Crypto crypto) throws CryptoNotFoundException, TooManyRequestsException {
         cryptoManager.addCrypto(crypto);
         return new ResponseEntity<>("Crypto has been successfully added!", HttpStatus.CREATED);
     }
@@ -48,7 +49,7 @@ public class CryptoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> getCryptoDetails(@Valid @RequestBody Crypto updatedCrypto,
-                                                   @PathVariable Integer id) throws CryptoNotFoundException {
+                                                   @PathVariable Integer id) throws CryptoNotFoundException, TooManyRequestsException {
         if (!updatedCrypto.getId().equals(id)) {
             return new ResponseEntity<>("ID in the request body does not match the ID in the URL!", HttpStatus.BAD_REQUEST);
         }

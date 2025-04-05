@@ -2,7 +2,6 @@ package com.engeto.crypto_portfolio_manager.model;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -17,19 +16,16 @@ public class Crypto implements Comparable<Crypto> {
     private Integer id;
 
     @NotNull(message = "Crypto name is required.")
-    @Pattern(regexp = "^[A-Za-z]+$", message = "Crypto name must contain only letters.")
     private String name;
 
     @NotNull(message = "Crypto symbol is required.")
-    @Pattern(regexp = "^[A-Za-z]+$", message = "Crypto symbol must contain only letters.")
     private String symbol;
 
-    @NotNull(message = "Crypto price is required.")
-    @Min(value = 0, message = "Crypto price must be greater than or equal to 0.")
+    // Price is being ignored even if is in user´s input -> should be always fetched from CoinGecko
     private BigDecimal price;
 
     @Min(value = 0, message = "Crypto quantity must be greater than or equal to 0.")
-    private Double quantity;
+    private BigDecimal quantity;
 
     @Override
     public int compareTo(Crypto other) {

@@ -21,44 +21,46 @@ public class GlobalExceptionHandler {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 
-    @ExceptionHandler(CryptoNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleCryptoNotFoundException(CryptoNotFoundException ex, HttpServletRequest request) {
+    @ExceptionHandler({CryptoNotFoundException.class, TooManyRequestsException.class, HttpMessageNotReadableException.class, MethodArgumentNotValidException.class})
+    public ResponseEntity<Map<String, Object>> handleException(Exception ex, HttpServletRequest request) {
         logError(ex);
-        return createErrorResponse(request, ex.getMessage(), HttpStatus.NOT_FOUND, null);
-    }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Map<String, Object>> handleInvalidFormatException(HttpMessageNotReadableException ex, HttpServletRequest request) {
-        logError(ex);
-        Map<String, Object> additionalDetails = new HashMap<>();
-        additionalDetails.put("exampleInput", CryptoJsonExampleFormat.CRYPTO_JSON_EXAMPLE_FORMAT);
-        return createErrorResponse(request, "The provided data format is incorrect!", HttpStatus.BAD_REQUEST, additionalDetails);
-    }
+        // Default error message and status
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        String message = ex.getMessage();
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleValidationException(MethodArgumentNotValidException ex, HttpServletRequest request) {
-        logError(ex);
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(fieldError -> errors.put(fieldError.getField(), fieldError.getDefaultMessage()));
-        return createErrorResponse(request, "Data validation failed!", HttpStatus.BAD_REQUEST, Map.of("errors", errors));
+        Map<String, Object> errorDetails = new HashMap<>();
+        errorDetails.put("dateTime", LocalDateTime.now().format(formatter));
+        errorDetails.put("path", request.getRequestURI());
+
+        switch (ex) {
+            case CryptoNotFoundException cryptoNotFoundException -> status = HttpStatus.NOT_FOUND;
+            case TooManyRequestsException tooManyRequestsException -> status = HttpStatus.TOO_MANY_REQUESTS;
+            case HttpMessageNotReadableException httpMessageNotReadableException -> {
+                status = HttpStatus.BAD_REQUEST;
+                message = "The provided input is incorrect!";
+                errorDetails.put("exampleInput", CryptoJsonExampleFormat.CRYPTO_JSON_EXAMPLE_FORMAT);
+            }
+            case MethodArgumentNotValidException methodArgumentNotValidException -> {
+                status = HttpStatus.BAD_REQUEST;
+                message = "Data validation failed!";
+                Map<String, String> errors = new HashMap<>();
+                methodArgumentNotValidException.getBindingResult().getFieldErrors()
+                        .forEach(fieldError -> errors.put(fieldError.getField(), fieldError.getDefaultMessage()));
+                errorDetails.put("errors", errors);
+            }
+            default -> {
+            }
+        }
+
+        errorDetails.put("message", message);
+        errorDetails.put("status", status.value());
+        errorDetails.put("error", status.getReasonPhrase());
+
+        return new ResponseEntity<>(errorDetails, status);
     }
 
     private void logError(Throwable ex) {
-        log.error("User input contains an error: {}", ex.getMessage());
-    }
-
-    private ResponseEntity<Map<String, Object>> createErrorResponse(HttpServletRequest request, String message, HttpStatus status, Map<String, Object> additionalDetails) {
-        Map<String, Object> errorDetails = new HashMap<>();
-        errorDetails.put("message", message);
-        errorDetails.put("dateTime", LocalDateTime.now().format(formatter));
-        errorDetails.put("status", status.value());
-        errorDetails.put("error", status.getReasonPhrase());
-        errorDetails.put("path", request.getRequestURI());
-
-        if (additionalDetails != null) {
-            errorDetails.putAll(additionalDetails);
-        }
-
-        return new ResponseEntity<>(errorDetails, status);
+        log.error("An error occurred: {}", ex.getMessage());
     }
 }
