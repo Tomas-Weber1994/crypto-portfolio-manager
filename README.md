@@ -8,18 +8,17 @@ A Spring Boot application for managing a cryptocurrency portfolio. It supports r
 ### Core Components:
 - **Crypto** – Represents a cryptocurrency, including ID, name, symbol, price, and quantity.
 - **CryptoManager** – Handles core logic for adding, retrieving, and sorting cryptocurrencies.
-- **CryptoPriceService** – Retrieves current CZK prices from the CoinGecko API. Portfolio value is updated at intervals defined in application.properties.
+- **CryptoPriceService** – Retrieves current CZK prices from the CoinGecko API. Portfolio value is updated at intervals defined in `application.properties`.
 - **CryptoValidationService** – Loads and caches supported cryptocurrencies from CoinGecko for validation.
 - **CryptoController** – Handles REST API requests (add, retrieve, sort, update).
 - **GlobalExceptionHandler** – Handles exceptions such as invalid input or missing cryptocurrency.
 
 ## Endpoints:
-- **POST /api/cryptos** – Adds a new cryptocurrency to3 the portfolio. The price is automatically fetched from the CoinGecko API.
+- **POST /api/cryptos** – Adds a new cryptocurrency to the portfolio. The price is automatically fetched from the CoinGecko API.
 - **GET /api/cryptos** – Retrieves all cryptocurrencies, with optional sorting by `price`, `name`, or `quantity` using the `sort` query parameter.
-- **GET /api/cryptos/{id}** – Retrieves a specific cryptocurrency by its ID.
-- **PUT /api/cryptos/{id}** – Updates the details of a cryptocurrency by its ID. The request body should contain the updated information for the cryptocurrency.
-- **GET /api/portfolio-value** – Retrieves the total value of the cryptocurrency portfolio, calculated by summing the `price * quantity` of all cryptocurrencies in the portfolio.
-
+- **GET /api/cryptos/{id}** – Returns details of a cryptocurrency with the given `id`.
+- **PUT /api/cryptos/{id}** – Updates an existing cryptocurrency. The `id` in the request path and body must match. Trying to manually update the price has no effect.
+- **GET /api/portfolio-value** – Returns the total value of the portfolio, calculated as `price * quantity` for each cryptocurrency.
 
 ## Usage
 After running the application, you can access the API documentation via Swagger UI at:
