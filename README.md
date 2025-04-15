@@ -2,6 +2,7 @@
 
 ## Description
 A Spring Boot application for managing a cryptocurrency portfolio. It supports real-time price fetching from the CoinGecko API, portfolio valuation, and a RESTful API for adding, updating, sorting, and retrieving cryptocurrencies.
+The project uses Maven for dependency management and building the application.
 
 ## Structure of the Application
 
