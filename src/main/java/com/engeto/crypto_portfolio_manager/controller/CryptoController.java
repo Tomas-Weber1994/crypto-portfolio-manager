@@ -48,7 +48,7 @@ public class CryptoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> getCryptoDetails(@Valid @RequestBody Crypto updatedCrypto,
+    public ResponseEntity<String> updateCryptoById(@Valid @RequestBody Crypto updatedCrypto,
                                                    @PathVariable Integer id) throws CryptoNotFoundException, TooManyRequestsException {
         if (!updatedCrypto.getId().equals(id)) {
             return new ResponseEntity<>("ID in the request body does not match the ID in the URL!", HttpStatus.BAD_REQUEST);
@@ -58,7 +58,7 @@ public class CryptoController {
     }
 
     @GetMapping("/portfolio-value")
-    public ResponseEntity<String> getCryptoDetails() {
+    public ResponseEntity<String> getPortfolioValue() {
         BigDecimal portfolioValue = cryptoManager.getPortfolioValue();
         return new ResponseEntity<>("The total value of the cryptocurrency portfolio is: " + portfolioValue + " CZK", HttpStatus.OK);
     }
